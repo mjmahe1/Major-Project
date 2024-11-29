@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neeru Samatolana - Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f0f2f5;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a90e2;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        /* Dashboard Grid */
+        .dashboard {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a90e2;
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Map Styles */
+        .map-container {
+            height: 400px;
+            background: #e9ecef;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        /* Alert Styles */
+        .alerts-list {
+            list-style: none;
+        }
+
+        .alert-item {
+            padding: 1rem;
+            border-left: 4px solid;
+            margin-bottom: 1rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .alert-critical {
+            border-left-color: #ff4444;
+        }
+
+        .alert-warning {
+            border-left-color: #ffa000;
+        }
+
+        .alert-info {
+            border-left-color: #4a90e2;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 1rem;
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+        }
+
+        
+        
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #357abd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Dashboard -->
+    <nav class="navbar">
+        <div class="logo">Neeru Samatolana</div>
+        <div class="user-menu">
+            <div class="notification-bell">
+                 bells
+                <span class="notification-count">3</span>
+            </div>
+            <span id="userName">Admin</span>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <!-- Overview Statistics -->
+        <div class="card" style="grid-column: span 2;">
+            <h2 class="card-title">Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">85%</div>
+                    <div class="stat-label">Average Water Level</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2.5M</div>
+                    <div class="stat-label">Total Supply (Liters)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Active Reservoirs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">98%</div>
+                    <div class="stat-label">Supply Efficiency</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Water Level Chart -->
+        <div class="card" style="grid-column: span 2;">
+            <h2 class="card-title">Water Levels Trend</h2>
+            <div class="chart-container">
+                <canvas id="waterLevelChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="card" style="grid-column: span 2;">
+            <h2 class="card-title">Dakshina Kannada Water Resources</h2>
+            <div class="map-container">
+                [Interactive Map Placeholder]
+                Click on icons to view reservoir details
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="card">
+            <h2 class="card-title">
+                Alerts & Notifications
+                <span style="color: #ff4444;">3 New</span>
+            </h2>
+            <ul class="alerts-list">
+                <li class="alert-item alert-critical">
+                    <strong>Critical: Low Water Level</strong>
+                    <p>Thumbe Dam at 15% capacity</p>
+                </li>
+                <li class="alert-item alert-warning">
+                    <strong>Warning: Maintenance Required</strong>
+                    <p>Scheduled maintenance for Pump Station 3</p>
+                </li>
+                <li class="alert-item alert-info">
+                    <strong>Update: Supply Increase</strong>
+                    <p>Water supply increased by 10% in Mangalore region</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Supply Distribution -->
+        <div class="card">
+            <h2 class="card-title">Supply Distribution</h2>
+            <div class="chart-container">
+                <canvas id="supplyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            
+        // Supply Distribution Chart
+        const supplyCtx = document.getElementById('supplyChart').getContext('2d');
+        new Chart(supplyCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Mangalore', 'Bantwal', 'Puttur', 'Sullia'],
+                datasets: [{
+                    data: [40, 25, 20, 15],
+                    backgroundColor: ['#4a90e2', '#357abd', '#2c5282', '#1a365d']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>
+</html>
